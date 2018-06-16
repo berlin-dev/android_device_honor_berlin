@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Call Honor 6X
 $(call inherit-product, device/honor/berlin/full_berlin.mk)
 
 # Inherit some common RR stuff.
@@ -35,7 +36,3 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 
 # Jack Server
 ANDROID_JACK_VM_ARGS := -Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx8192m
-
-
-
-
