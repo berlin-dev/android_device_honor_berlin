@@ -66,6 +66,9 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BACKLIGHT_PATH := /sys/class/leds/lcd_backlight0/brightness
 
+# Dex-Pre-Opt
+WITH_DEXPREOPT := true
+
 # Lineage Hardware
 BOARD_HARDWARE_CLASS := \
     $(LOCAL_PATH)/lineagehw \
@@ -118,6 +121,9 @@ TARGET_EXFAT_DRIVER := exfat
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/fstab.hi6250
+
+# RIL
+SIM_COUNT := 2
 
 # Enable WEBGL
 ENABLE_WEBGL := true

@@ -170,6 +170,9 @@ PRODUCT_PACKAGES += \
     android.hardware.tetheroffload.config@1.0
 
 # Properties
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    ro.adb.secure=0
+
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapstartsize=8m \
     dalvik.vm.heapgrowthlimit=384m \
