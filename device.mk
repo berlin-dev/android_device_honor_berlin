@@ -17,23 +17,89 @@
 $(call inherit-product-if-exists, vendor/honor/berlin/berlin-vendor.mk)
 
 # Overlay
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay-lineage
 
-# Media configuration
+# Audio
+PRODUCT_PACKAGES += \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio@2.0-service \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.soundtrigger@2.0-impl 
+
+PRODUCT_PACKAGES += \
+    audio.primary.default \
+    audio.a2dp.default \
+    audio.usb.default \
+    audio.r_submix.default \
+    libaudioutils \
+    libaudioroute \
+    libtinyalsa \
+    tinyplay \
+    tinycap \
+    tinymix \
+    tinypcminfo
+
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl \
+    android.hardware.bluetooth@1.0-service \
+    libbt-vendor
+
+# Camera
+PRODUCT_PACKAGES += \
+    android.hardware.camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl \
+    android.hardware.vibrator@1.0-impl
+
+# Prebuilts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilts/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/prebuilts/media_codecs_performance.xml:system/etc/media_codecs_performance.xml \
     $(LOCAL_PATH)/prebuilts/media_profiles.xml:system/etc/media_profiles.xml
 
-PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
-
 # GPS
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilts/clatd.conf:system/etc/clatd.conf \
     $(LOCAL_PATH)/prebuilts/geoloc.conf:system/etc/geoloc.conf
+
+PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.0-impl \
+    android.hardware.gnss@1.0-service
+
+# Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.renderscript@1.0-impl \
+    android.hardware.configstore@1.0-service
+
+# HIDL
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilts/manifest.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml
+
+# Miscellaneous
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.0-impl \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.light@2.0-service \
+    android.hardware.light@2.0-impl \
+    android.hardware.sensors@1.0-impl
+
+# NFC
+PRODUCT_PACKAGES += \
+    android.hardware.nfc@1.0
+
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@3.0-impl
+
+# Gatekeeper
+PRODUCT_PACKAGES += \
+    android.hardware.gatekeeper@1.0-impl
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -63,47 +129,26 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.software.app_widgets.xml:system/etc/permissions/android.software.app_widgets.xml \
-    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
-
-# Screen density
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
-
-PRODUCT_TAGS += dalvik.gc.type-precise
-
-# Audio
-PRODUCT_PACKAGES += \
-    audio.primary.default \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
-    libaudioutils \
-    libaudioroute \
-    libtinyalsa \
-    tinyplay \
-    tinycap \
-    tinymix \
-    tinypcminfo
-
-# Fingerprint sensor
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 # Ramdisk
-PRODUCT_PACKAGES += \
-    fstab.hi6250 \
-    fstab.zram1280m \
-    fstab.zram1536m \
-    init.charger.rc \
-    init.chip.charger.rc \
-    init.chip.usb.rc \
-    init.hi6250.power.rc \
-    init.hi6250.rc \
-    init.hi6250.usb.configfs.rc \
-    init.hi6250.usb.rc \
-    ueventd.hi6250.rc
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/fstab.hi6250:$(TARGET_ROOT_OUT)/fstab.hi6250 \
+    $(LOCAL_PATH)/init.chip.usb.rc:$(TARGET_ROOT_OUT)/init.chip.usb.rc \
+    $(LOCAL_PATH)/init.hi6250.power.rc:$(TARGET_ROOT_OUT)/init.hi6250.power.rc \
+    $(LOCAL_PATH)/init.hi6250.rc:$(TARGET_ROOT_OUT)/init.hi6250.rc \
+    $(LOCAL_PATH)/init.hi6250.usb.rc:$(TARGET_ROOT_OUT)/init.hi6250.usb.rc\
+    $(LOCAL_PATH)/ueventd.hi6250.rc:$(TARGET_ROOT_OUT)/ueventd.hi6250.rc
 
-# LIBShim
+# RIL
+PRODUCT_PACKAGES += \
+    android.hardware.radio@1.0
+
+# Shimlibs
 PRODUCT_PACKAGES += \
     libshim_stagefright
 
@@ -114,23 +159,24 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     sys.usb.configfs=1 \
     sys.usb.controller=hisi-usb-otg
 
-# Power HAL
-PRODUCT_PACKAGES += \
-    power.hi6250
-
-# SNAP Camera
-PRODUCT_PACKAGES += \
-    Snap
-
-# Doze
-PRODUCT_PACKAGES += \
-    HisiDoze
+PRODUCT_TAGS += dalvik.gc.type-precise
 
 # USB
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
-# Wifi
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0-service \
+    android.hardware.tetheroffload.config@1.0
+
+# Properties
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=384m \
+    dalvik.vm.heapsize=512m \
+    dalvik.vm.heaptargetutilization=0.75
+
+# Wi-Fi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/hostapd_hisi.conf:system/etc/wifi/hostapd_hisi.conf \
     $(LOCAL_PATH)/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
@@ -145,8 +191,10 @@ PRODUCT_PACKAGES += \
     hostapd \
     wpa_supplicant
 
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.heapstartsize=8m \
-    dalvik.vm.heapgrowthlimit=384m \
-    dalvik.vm.heapsize=512m \
-    dalvik.vm.heaptargetutilization=0.75
+PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    android.hardware.wifi.supplicant@1.0
+
+# VNDK
+PRODUCT_PACKAGES += \
+    vndk-sp

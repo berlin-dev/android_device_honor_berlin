@@ -20,18 +20,15 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/locales_full.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_n.mk)
 
-# Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
-
-# Inherit from kiwi device
+# Inherit from Honor 6X
 $(call inherit-product, device/honor/berlin/device.mk)
 
-# Vendor
-PRODUCT_RESTRICT_VENDOR_FILES := false
+# APN
+$(call inherit-product, device/honor/berlin/pre-base.mk)
 
-# Device identifier. This must come after all inclusions
+# Identify
 PRODUCT_NAME := full_berlin
 PRODUCT_DEVICE := berlin
-PRODUCT_BRAND := HONOR
-PRODUCT_MANUFACTURER := HUAWEI
-PRODUCT_MODEL := HONOR-6X
+PRODUCT_BRAND := Honor
+PRODUCT_MANUFACTURER := Huawei
+PRODUCT_MODEL := Honor 6X

@@ -26,83 +26,29 @@
  */
 
 #include <cstdlib>
-#include <fstream>
-#include <string>
+#include <unistd.h>
+#include <fcntl.h>
+#define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
+#include <sys/_system_properties.h>
+ 
 
 #include "vendor_init.h"
 #include "property_service.h"
-#include "log.h"
-#include "util.h"
 
-#include "init_hi6250.h"
-
-void init_target_properties()
+void property_override(char const prop[], char const value[])
 {
-    std::string platform;
-    std::ifstream fin;
-    std::string buf;
+    prop_info *pi;
 
-    platform = property_get("ro.board.platform");
-    if (platform != ANDROID_TARGET)
-        return;
+    pi = (prop_info*) __system_property_find(prop);
+    if (pi)
+        __system_property_update(pi, value, strlen(value));
+    else
+        __system_property_add(prop, strlen(prop), value, strlen(value));
+}
 
-    fin.open("/sys/firmware/devicetree/base/hisi,product_name");
-    while (getline(fin, buf))
-        if ((buf.find("BLN-L21") != std::string::npos) || (buf.find("BLN-L22") != std::string::npos) || (buf.find("BLN-L24") != std::string::npos) || (buf.find("BLN-AL10") != std::string::npos) || (buf.find("BLN-AL20") != std::string::npos) || (buf.find("BLN-AL30") != std::string::npos) || (buf.find("BLN-AL40") != std::string::npos) || (buf.find("BLN-TL00") != std::string::npos) || (buf.find("BLN-TL10") != std::string::npos) || (buf.find("BLN-TL10C752") != std::string::npos) || (buf.find("BLL-L01") != std::string::npos) || (buf.find("BLL-L02") != std::string::npos) || (buf.find("BLL-L03") != std::string::npos) || (buf.find("BLL-L21") != std::string::npos) || (buf.find("BLL-L22") != std::string::npos) || (buf.find("BLL-L23") != std::string::npos))
-            break;
-    fin.close();
-
-    if (buf.find("BLN-L21") != std::string::npos) {
-        property_set("ro.product.model", "BLN-L21");
-    }
-    else if (buf.find("BLN-L22") != std::string::npos) {
-        property_set("ro.product.model", "BLN-L22");
-    }
-    else if (buf.find("BLN-L24") != std::string::npos) {
-        property_set("ro.product.model", "BLN-L24");
-        property_set("ro.build.description", "BLN-L24-user 7.0 HONORBLN-L24 C567B360 release-keys");
-        property_set("ro.build.fingerprint", "HONOR/BLN-L24/HWBLN-H:7.0/HONORBLN-L24/C567B360:user/release-keys");
-    }
-    else if (buf.find("BLN-AL10") != std::string::npos) {
-        property_set("ro.product.model", "BLN-AL10");
-    }
-    else if (buf.find("BLN-AL20") != std::string::npos) {
-        property_set("ro.product.model", "BLN-AL20");
-    }
-    else if (buf.find("BLN-AL30") != std::string::npos) {
-        property_set("ro.product.model", "BLN-AL30");
-    }
-    else if (buf.find("BLN-AL40") != std::string::npos) {
-        property_set("ro.product.model", "BLN-AL40");
-    }
-    else if (buf.find("BLN-TL00") != std::string::npos) {
-        property_set("ro.product.model", "BLN-TL00");
-    }
-    else if (buf.find("BLN-TL10") != std::string::npos) {
-        property_set("ro.product.model", "BLN-TL10");
-    }
-    else if (buf.find("BLN-TL10C752") != std::string::npos) {
-        property_set("ro.product.model", "BLN-TL10C752");
-    }
-    else if (buf.find("BLL-L01") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L01");
-    }
-    else if (buf.find("BLL-L02") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L02");
-    }
-    else if (buf.find("BLL-L03") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L03");
-    }
-    else if (buf.find("BLL-L21") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L21");
-    }
-    else if (buf.find("BLL-L22") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L22");
-    }
-    else if (buf.find("BLL-L23") != std::string::npos) {
-        property_set("ro.product.model", "BLL-L23");
-    }
-    else {
-	property_set("ro.product.model", "UNKNOWN");
-    }
+void vendor_load_properties() {
+        property_override("ro.product.model", "BLN-L21");
+        property_override("ro.product.device", "berlin");
+        property_override("ro.build.description", "BLN-L21-user 7.0 HONORBLN-L21 C432B360 release-keys");
+        property_override("ro.build.fingerprint", "HONOR/BLN-L21/HWBLN-H:7.0/HONORBLN-L21/C432B360:user/release-keys");
 }

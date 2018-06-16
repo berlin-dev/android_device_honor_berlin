@@ -43,9 +43,6 @@ ENABLE_CPUSETS := true
 # Enable SCHEDBOOST
 ENABLE_SCHEDBOOST := true
 
-# Assert
-TARGET_OTA_ASSERT_DEVICE := hi6250,Berlin,berlin,HWBLN-H,BLN-L21,BLN-L22,BLN-L24
-
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 TARGET_PROVIDES_LIBAUDIO := true
@@ -65,24 +62,20 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
-# Camera
-USE_DEVICE_SPECIFIC_CAMERA := true
-TARGET_SPECIFIC_CAMERA_PARAMETER_LIBRARY := libcamera_parameters_ext
-
 # Charger 
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BACKLIGHT_PATH := /sys/class/leds/lcd_backlight0/brightness
 
-# CMHW
+# Lineage Hardware
 BOARD_HARDWARE_CLASS := \
-    $(LOCAL_PATH)/cmhw \
-    hardware/cyanogen/cmhw
+    $(LOCAL_PATH)/lineagehw \
+    hardware/lineage/lineagehw
 
 # Display
 USE_OPENGL_RENDERER := true
 TARGET_HARDWARE_3D := true
 ANDROID_ENABLE_RENDERSCRIPT := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 6
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_USES_ION := true
 
 # GPS
@@ -94,6 +87,7 @@ BOARD_KERNEL_BASE := 0x00478000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_CMDLINE := loglevel=4 coherent_pool=512K page_tracker=on slub_min_objects=12 androidboot.selinux=permissive
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x07b88000 --tags_offset 0x07588000
+BOARD_KERNEL_IMAGE_NAME := Image.gz
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 TARGET_KERNEL_HEADER_ARCH := arm64
@@ -119,14 +113,11 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 # Properties
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
-# Recovery
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/fstab.hi6250
+# SD-Card
+TARGET_EXFAT_DRIVER := exfat
 
-# RIL
-TARGET_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
-BOARD_RIL_CLASS := ../../../device/honor/berlin/ril
-PROTOBUF_SUPPORTED := true
-TARGET_RIL_VARIANT := proprietary
+# Recovery
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/fstab.hi6250
 
 # Enable WEBGL
 ENABLE_WEBGL := true
@@ -134,21 +125,17 @@ ENABLE_WEBGL := true
 # Vendor
 BOARD_NEEDS_VENDORIMAGE_SYMLINK := true
 TARGET_COPY_OUT_VENDOR := system
+PRODUCT_RESTRICT_VENDOR_FILES := false
 
-# Vendor Init
-TARGET_UNIFIED_DEVICE := true
+# Init
 TARGET_INIT_VENDOR_LIB := libinit_hi6250
-TARGET_LIBINIT_DEFINES_FILE := $(LOCAL_PATH)/init/init_berlin.cpp
 
 # Sepolicy
 BOARD_SEPOLICY_DIRS += \
 	device/honor/berlin/sepolicy
 
 # Wifi
-WPA_SUPPLICANT_VERSION          := VER_0_8_X
-BOARD_WPA_SUPPLICANT_DRIVER 	:= NL80211
-BOARD_HOSTAPD_DRIVER 		:= NL80211
-CONFIG_DRIVER_NL80211		:= y
-
-# inherit from the proprietary version
--include vendor/honor/berlin/BoardConfigVendor.mk
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_HOSTAPD_DRIVER := NL80211
+CONFIG_DRIVER_NL80211 := y
